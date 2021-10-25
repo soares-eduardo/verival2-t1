@@ -1,7 +1,7 @@
 package com.eduardojoao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -9,49 +9,48 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class FatorialTest {
-    
-    Numero num;
-    Somador som;
-    Multiplicador multi;
+    Fatorial fatorial;
 
     @BeforeEach
     void setUp() {
-        Somador somador = mock(Somador.class);
-    }
-
-
-    Fatorial fat;
-
-    @Test
-    public void fatorial1() {
-        num = new Numero(-1);
-        som = new Somador();
-        som.set(num);
-        multi = new Multiplicador(som);
-        fat = new Fatorial(multi);
-        fat.fatorial(fat.resultado());
-        assertEquals(null, fat.resultado());
-    }
+        Numero numero = new Numero(10);
+        Somador somador = new Somador();
+        somador.set(numero);
+        Multiplicador multiplicador = new Multiplicador(somador);
+        this.fatorial = new Fatorial(multiplicador);
+    }    
 
     @Test
-    public void fatorial2() {
-        num = new Numero(0);
-        som = new Somador();
-        som.set(num);
-        multi = new Multiplicador(som);
-        fat = new Fatorial(multi);
-        fat.fatorial(fat.resultado());
-        assertEquals(1, fat.resultado().valor());
+    void fatorialNumeroNegativoTest() {
+        // given
+        Numero numeroNegativo = new Numero(-10);
+        // where
+        Fatorial result = this.fatorial.fatorial(numeroNegativo);
+        // then
+        assertNull(result.resultado());
+    }
+    
+    @Test
+    void fatorialDeUmTest() {
+        // given
+        Numero numeroZero = new Numero(0);
+        Numero numeroUm = new Numero(1);
+        // where
+        Fatorial resultZero = this.fatorial.fatorial(numeroZero);
+        Fatorial resultUm = this.fatorial.fatorial(numeroUm);
+        // then
+        assertEquals(1, resultZero.resultado().valor());
+        assertEquals(1, resultUm.resultado().valor());
     }
 
     @Test
-    public void fatorial3() {
-        num = new Numero(8);
-        som = new Somador();
-        som.set(num);
-        multi = new Multiplicador(som);
-        fat = new Fatorial(multi);
-        fat.fatorial(fat.resultado());
-        assertEquals(40320, fat.resultado().valor());
+    void fatorialTest() {
+        // given
+        Numero numero = new Numero(5);
+        // where
+        Fatorial result = this.fatorial.fatorial(numero);
+        // then
+        assertEquals(120, result.resultado().valor());
     }
+
 }
